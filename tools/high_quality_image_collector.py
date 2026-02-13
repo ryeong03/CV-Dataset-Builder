@@ -121,7 +121,13 @@ class Brain:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"[CLIP] AI 모델 로딩 중... ({self.device})")
         self.model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(self.device)
-        self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        try:
+            self.processor = CLIPProcessor.from_pretrained(
+                "openai/clip-vit-base-patch32",
+                tokenizer_kwargs={"use_fast": True},
+            )
+        except TypeError:
+            self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
     def get_embedding(self, image: Image.Image) -> np.ndarray:
         inputs = self.processor(images=image, return_tensors="pt", padding=True).to(self.device)
@@ -190,7 +196,8 @@ def main():
     if -1 in unique_labels: unique_labels.remove(-1) # 노이즈 제거
     
     if not unique_labels:
-        print("\n[경고] 뚜렷한 특징을 못 찾았습니다.")
+        print(f"\n[경고] 뚜렷한 특징을 못 찾았습니다. (분석한 이미지 {len(valid_data)}장, DBSCAN에서 모두 노이즈로 분류됨)")
+        print("  → 수집 개수를 늘리거나(예: --limit 80), 검색 결과가 너무 다양하면 이 메시지가 나올 수 있습니다.")
         return
 
     best_label = max(unique_labels, key=list(labels).count)
