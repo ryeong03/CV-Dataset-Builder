@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수집 로그</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .log-page { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .log-page h1 { font-size: 1.25rem; margin-bottom: 16px; }
+    .log-page .back { display: inline-block; margin-bottom: 16px; color: var(--accent); text-decoration: none; }
+    .log-page .back:hover { text-decoration: underline; }
+    #logContent { white-space: pre-wrap; font-size: 0.85rem; background: #18181b; padding: 16px; border-radius: 8px; overflow: auto; max-height: 75vh; }
+  </style>
+</head>
+<body>
+  <div class="log-page">
+    <a href="/" class="back">← 대시보드로 돌아가기</a>
+    <h1 id="logTitle">수집 로그</h1>
+    <pre id="logContent">로딩 중...</pre>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const jobId = params.get('job_id');
+    const title = document.getElementById('logTitle');
+    const content = document.getElementById('logContent');
+    if (!jobId) {
+      content.textContent = 'job_id가 없습니다.';
+    } else {
+      fetch('/api/jobs/' + jobId).then(r => r.json()).then(job => {
+        title.textContent = '수집 로그: ' + job.query + ' (' + job.id + ')';
+        content.textContent = job.log || '(로그 없음)';
+      }).catch(e => {
+        content.textContent = '불러오기 실패: ' + e.message;
+      });
+    }
+  </script>
+</body>
+</html>

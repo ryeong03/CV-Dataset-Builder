@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Dataset Builder</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🖼️ CV Dataset Builder</h1>
+
+    <div class="card">
+      <h2 style="margin:0 0 16px 0; font-size:1.1rem;">새 수집 작업</h2>
+      <label>검색어</label>
+      <input id="query" type="text" placeholder="예: 아자핑" value="아자핑">
+      <div class="row">
+        <div style="flex:0 0 120px;">
+          <label>수집 개수</label>
+          <input id="limit" type="number" min="1" max="500" value="20">
+        </div>
+        <div style="flex:1;">
+          <label>저장 폴더 (프로젝트 기준)</label>
+          <input id="out_dir" type="text" value="data/naver_collected" placeholder="data/naver_collected">
+        </div>
+        <button id="btnRun">수집 시작</button>
+      </div>
+      <div id="runResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 16px 0; font-size:1.1rem;">수집 이력</h2>
+      <p style="margin:0 0 12px 0;"><button type="button" id="btnClearHistory" class="btn-sm" style="background:#52525b;">이력 전체 삭제</button></p>
+      <div id="jobList">로딩 중...</div>
+    </div>
+  </div>
+
+  <div id="imageModal">
+    <div class="modal-head">
+      <h3 id="modalTitle">수집 이미지</h3>
+      <button class="close" id="modalClose">닫기</button>
+    </div>
+    <div id="modalGrid" class="grid"></div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
