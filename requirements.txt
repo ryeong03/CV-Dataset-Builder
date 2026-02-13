@@ -1,0 +1,16 @@
+# OpenCV, numpy, PyTorch 등 필요한 파이썬 패키지 목록입니다.
+# 가상환경 만들 때: pip install -r requirements.txt
+
+selenium
+webdriver-manager
+scikit-learn
+transformers
+torch
+pillow
+requests
+opencv-python
+numpy
+fastapi
+uvicorn[standard]
+psycopg2-binary
+python-dotenv
